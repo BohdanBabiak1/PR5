@@ -68,7 +68,6 @@ function saveTasks() {
     localStorage.setItem('tasks', JSON.stringify(tasks))
 }
 
-
 function loadTasks() {
     let tasks = localStorage.getItem('tasks')
     if (tasks) {
@@ -117,6 +116,66 @@ function setupTaskEvents(task, cboxClicked) {
     })
 }
 
+function sortFunction(){
+    let radios = document.querySelectorAll('input[type="radio"]')
+    let selectedRadio = null
+    radios.forEach(function(radio) {
+        radio.addEventListener('click', function() {
+            if (selectedRadio != radio) {
+                selectedRadio = radio
+                console.log(radio.value)
+
+                let completedTasks = []
+                let unfinishedTasks = []
+
+                if(radio.value == 'completed'){
+                    toDoList.querySelectorAll('tr:not(:first-child)').forEach(function(task) {
+                        if (task.classList.contains('completedTask')) {
+                            completedTasks.push(task)
+                        } else {
+                            unfinishedTasks.push(task)
+                        }
+                    })
+    
+                    toDoList.querySelectorAll('tr:not(:first-child)').forEach(function(task) {
+                        task.remove()
+                    })
+                    completedTasks.forEach(function(completedTask) {
+                        toDoList.appendChild(completedTask)
+                    })
+                    unfinishedTasks.forEach(function(unfinishedTask) {
+                        toDoList.appendChild(unfinishedTask)
+                    })
+                }
+                else if (radio.value == 'notCompleted'){
+                    toDoList.querySelectorAll('tr:not(:first-child)').forEach(function(task) {
+                        if (task.classList.contains('completedTask')) {
+                            completedTasks.push(task)
+                        } else {
+                            unfinishedTasks.push(task)
+                        }
+                    })
+    
+                    toDoList.querySelectorAll('tr:not(:first-child)').forEach(function(task) {
+                        task.remove()
+                    })
+                    unfinishedTasks.forEach(function(unfinishedTask) {
+                        toDoList.appendChild(unfinishedTask)
+                    })
+                    completedTasks.forEach(function(completedTask) {
+                        toDoList.appendChild(completedTask)
+                    })
+                }
+
+            } else {
+                radio.checked = false
+                selectedRadio = null
+                location.reload()
+            }
+        })
+    })
+}
+
 window.addEventListener('DOMContentLoaded', function() {
     loadTasks()
     addTaskInput.addEventListener('keyup', function(event) {
@@ -145,4 +204,5 @@ window.addEventListener('DOMContentLoaded', function() {
             saveTasks()
         }
     })
+    sortFunction()
 })
