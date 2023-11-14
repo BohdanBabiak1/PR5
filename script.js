@@ -123,8 +123,7 @@ function sortFunction(){
         radio.addEventListener('click', function() {
             if (selectedRadio != radio) {
                 selectedRadio = radio
-                console.log(radio.value)
-
+                
                 let completedTasks = []
                 let unfinishedTasks = []
 
